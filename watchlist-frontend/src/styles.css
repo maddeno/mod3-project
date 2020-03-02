@@ -40,6 +40,17 @@ body {
   #add-movie-form {
     font-size: 1.2em;
   }
+
+  #genre-filter {
+    font-size: 1.2em;
+    font-family: 'Trebuchet MS';
+    background-color: #eeeeee;
+    height: 100px;
+    width: 200px;
+    box-shadow: 10px 10px black;
+    padding: 10px;
+    border-radius: 10px; 
+  }
   
   main {
     display: grid;
