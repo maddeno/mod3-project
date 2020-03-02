@@ -1,9 +1,18 @@
 let addMovie = false;
 
+
+const NavButtons = document.querySelector("#buttons-container")
 fetchMovies()
 toggleForm()
 
-
+function genreFilter(){
+  NavButtons.addEventListener("click", function (event){
+       if(event.target.innerHTML === "Browse by Genre"){
+      console.log("yes!")
+      
+  }
+  })    
+}
 
 function fetchMovies() {
     fetch('http://localhost:3000/movies')
