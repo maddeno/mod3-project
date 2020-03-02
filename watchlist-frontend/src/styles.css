@@ -26,6 +26,20 @@ body {
   #buttons-container {
     text-align: center;
   }
+
+  div.form-container {
+    font-family: 'Trebuchet MS';
+    background-color: #eeeeee;
+    height: 300px;
+    width: 225px;
+    box-shadow: 10px 10px black;
+    padding: 10px;
+    border-radius: 10px;
+  }
+
+  #add-movie-form {
+    font-size: 1.2em;
+  }
   
   main {
     display: grid;
