@@ -1,18 +1,13 @@
 let addMovie = false;
+let genreFilter = false;
 
 
 const NavButtons = document.querySelector("#buttons-container")
 fetchMovies()
-toggleForm()
 
-function genreFilter(){
-  NavButtons.addEventListener("click", function (event){
-       if(event.target.innerHTML === "Browse by Genre"){
-      console.log("yes!")
-      
-  }
-  })    
-}
+toggleForm()
+toggleGenreFilter()
+
 
 function fetchMovies() {
     fetch('http://localhost:3000/movies')
@@ -38,9 +33,24 @@ function toggleForm() {
       addMovie = !addMovie;
       if (addMovie) {
         movieForm.style.display = "block";
-      } else {
+      } 
+      else {
         movieForm.style.display = "none";
       }
     });
-  }
+}
+
+function toggleGenreFilter() {
+    const genreBtn = document.getElementById("genreBtn");
+    const dropdown = document.getElementById("genre-filter");
+    genreBtn.addEventListener("click", () => {
+      genreFilter = !genreFilter;
+      if (genreFilter) {
+        dropdown.style.display = "block";
+      } 
+      else {
+        dropdown.style.display = "none";
+      }
+    });
+}
    
