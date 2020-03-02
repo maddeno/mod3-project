@@ -1,4 +1,7 @@
+let addMovie = false;
+
 fetchMovies()
+toggleForm()
 
 
 
@@ -18,4 +21,17 @@ function renderMovie(movie) {
     const main = document.querySelector('main')
     main.innerHTML += movieCard
 }
+
+function toggleForm() {
+    const addBtn = document.getElementById("addBtn");
+    const movieForm = document.querySelector(".form-container");
+    addBtn.addEventListener("click", () => {
+      addMovie = !addMovie;
+      if (addMovie) {
+        movieForm.style.display = "block";
+      } else {
+        movieForm.style.display = "none";
+      }
+    });
+  }
    
