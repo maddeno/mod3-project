@@ -22,6 +22,10 @@ body {
     padding: 10px;
     margin: 0;
   }
+
+  #buttons-container {
+    text-align: center;
+  }
   
   main {
     display: grid;
@@ -57,7 +61,7 @@ body {
   
   button {
     font-size: 1.2em;
-    color: #fff;
+    color: black;
     background-color: goldenrod;
     border-radius: 10px;
   }

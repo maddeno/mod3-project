@@ -11,7 +11,7 @@ function fetchMovies() {
 function renderMovie(movie) {
     const movieCard = `<div class="card">
             <h2>${movie.title}</h2>
-            <img src=${movie.image_url} height="240" width="180" />
+            <img src=${movie.image_url} height="240" width="175" />
             <h4>Directed By: ${movie.director}<br>Released: ${movie.release}</h4>
             <button id=${movie.id}>Add to Watchlist</button>
         </div>`
