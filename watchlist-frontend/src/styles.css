@@ -33,10 +33,12 @@ body {
   }
   
   div.card {
+    font-family: 'Trebuchet MS';
+    text-align: center;
     background-color: #eeeeee;
-    height: 250px;
-    width: 300px;
-    box-shadow: 10px 10px grey;
+    height: 475px;
+    width: 325px;
+    box-shadow: 10px 10px black;
     padding: 10px;
     border-radius: 10px;
   }
@@ -54,9 +56,9 @@ body {
   }
   
   button {
-    font-size: .65em;
+    font-size: 1.2em;
     color: #fff;
-    background-color: red;
+    background-color: goldenrod;
     border-radius: 10px;
   }
   
