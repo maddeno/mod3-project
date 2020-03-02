@@ -10,26 +10,31 @@
 
 
   <body>
+
     <header>
       <h2></h2>
       <h1>Welcome to Watch List!</h1>
     </header>
 
+
     <div id="buttons-container">
-      <button id="addBtn">Add Movie</button>    <button>Browse by Genre</button>    <button>Sign In</button>
+      <button id="addBtn">Add Movie</button>    <button id="genreBtn">Browse by Genre</button>    <button id="signInBtn">Sign In</button>
     </div>
-    <div id="genre-filter" style= "display : block">
-      <hr>
-    <label for="select-genre">Filter Movies By Genre:</label>
-    <select id="genre-dropdown" name="select-genre">
-      <option value="Action">Action</option>
-      <option value="Adventure">Adventure</option>
-      <option value="Drama">Drama</option>
-      <option value="Horror">Horror</option>
-      <option value="All">All</option>
-    </select>
+
+
+    <div id="genre-filter" style= "display : none"><br/>
+      <label for="select-genre">Filter Movies By Genre:</label>
+      <select id="genre-dropdown" name="select-genre">
+        <option value="Action">Action</option>
+        <option value="Adventure">Adventure</option>
+        <option value="Drama">Drama</option>
+        <option value="Horror">Horror</option>
+        <option value="All">All</option>
+      </select>
     </div>
-    <div class="form-container">
+
+
+    <div class="form-container" style="display:none">
       <form id="add-movie-form" class="add-movie-form">
         <h3>Add a Movie</h3>
 
@@ -82,8 +87,9 @@
       </form>
     </div>
 
+
     <main>
-      <!-- Add our Pokemon -->
+      
     </main>
 
     <script defer src="index.js"></script>
