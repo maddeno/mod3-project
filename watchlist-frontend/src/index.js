@@ -108,18 +108,5 @@ function genreFiltering() {
         movieCards[i].style.display = 'none';
       }
     }
-
-    // if (event.target.value === 'All') {
-    //   for (i = 0; movieCards.length < i; i++) {
-    //     movieCards[i].style.display = 'block';
-    //   }
-    //   if (event.target.value[0] === 'D') {
-    //     for (i = 0; movieCards.length < i; i++) {
-    //       movieCards[i].children[3].innerText[0] === 'D'
-    //         ? (card.style.display = 'block')
-    //         : (card.style.display = 'none');
-    //     }
-    //   }
-    //}
   });
 }
