@@ -7,6 +7,7 @@ fetchMovies()
 toggleForm()
 toggleGenreFilter()
 formListener()
+genreFiltering()
 
 
 function fetchMovies() {
@@ -89,6 +90,8 @@ function toggleGenreFilter() {
 }
 
 function genreFiltering() {
+  const genreFilterBtn = document.querySelector("#genre-filter")
+  const movieCards = document.querySelector("main").children
   genreFilterBtn.addEventListener('change', function(e) {
     console.log('yes!');
     const selectedGenre = event.target.value[0];
