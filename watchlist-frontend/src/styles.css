@@ -82,6 +82,7 @@ body {
     font-size: 1.05em;
     list-style: none;
     padding-right: 20px;
+    margin: -10px;
   }
   
   button {
