@@ -94,32 +94,21 @@ function genreFiltering() {
   const movieCards = document.querySelector("main").children
   genreFilterBtn.addEventListener('change', function(e) {
     console.log('yes!');
-    const selectedGenre = event.target.value[0];
+    const selectedGenre = event.target.value;
     //debugger;
 
     for (i = 0; i < movieCards.length; i++) {
       movieCards[i].style.display = 'block';
     }
     for (i = 0; i < movieCards.length; i++) {
-      if (selectedGenre === 'N') {
+      if (selectedGenre === 'None') {
         movieCards[i].style.display = 'block';
       } 
-      else if (movieCards[i].children[8].innerHTML[7] != selectedGenre) {
+      else if (movieCards[i].children[8].innerHTML != `Genre: ${selectedGenre}`) {
         movieCards[i].style.display = 'none';
       }
     }
 
-    // if (event.target.value === 'All') {
-    //   for (i = 0; movieCards.length < i; i++) {
-    //     movieCards[i].style.display = 'block';
-    //   }
-    //   if (event.target.value[0] === 'D') {
-    //     for (i = 0; movieCards.length < i; i++) {
-    //       movieCards[i].children[3].innerText[0] === 'D'
-    //         ? (card.style.display = 'block')
-    //         : (card.style.display = 'none');
-    //     }
-    //   }
-    //}
+  
   });
 }
