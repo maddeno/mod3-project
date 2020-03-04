@@ -5,6 +5,7 @@ const signInForm = document.querySelector('#sign-in-form');
 const NavButtons = document.querySelector('#buttons-container');
 const userContainerToggle = document.getElementsByClassName('user-info')[0];
 const userContainer = document.getElementsByClassName('user-info')[0];
+let currentUser
 
 fetchMovies();
 toggleForm();
@@ -13,22 +14,17 @@ formListener();
 genreFiltering();
 toggleSignIn();
 signInFetch();
-
-
 watchList();
-
-
+toggleDescription();
 
 function fetchMovies() {
   fetch('http://localhost:3000/movies')
-  .then(resp => resp.json())
-  .then(movieData => movieData.forEach(movie => renderMovie(movie)));
+    .then(resp => resp.json())
+    .then(movieData => movieData.forEach(movie => renderMovie(movie)));
 }
 
-
 function renderMovie(movie) {
-
-    const movieCard = `<div data-id=${movie.id} class="card" style="display: block">
+  const movieCard = `<div data-id=${movie.id} class="card" style="display: block">
         <h2>${movie.title}</h2>
         <img style="display: inline-block" src=${movie.image_url} class="movie-image" height="240" width="175" />
         <p style="display: none" class="card-description">${movie.description}</p>
@@ -36,62 +32,58 @@ function renderMovie(movie) {
         <br><li>Released: ${movie.release}</li>
         <br><li>Genre: ${movie.genre}</li><br>
         <button id=${movie.id}>Add to Watchlist</button>
-    </div>`
+    </div>`;
 
-    const main = document.querySelector('main');
-    main.innerHTML += movieCard;
+  const main = document.querySelector('main');
+  main.innerHTML += movieCard;
 }
 
-
-
 function formListener() {
-    const movieForm = document.getElementById('add-movie-form')
+  const movieForm = document.getElementById('add-movie-form');
 
-    movieForm.addEventListener('submit', function(e) {
-        e.preventDefault()
-        
-        const formData = {
-            title: e.target[0].value,
-            release: e.target[1].value,
-            director: e.target[2].value,
-            image_url: e.target[3].value,
-            genre: e.target[4].value,
-            description: e.target[5].value
-        }
-        
-        const reqObj = {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        }
+  movieForm.addEventListener('submit', function(e) {
+    e.preventDefault();
 
-        fetch('http://localhost:3000/movies', reqObj)
-        .then(resp => resp.json())
-        .then(movie => renderMovie(movie))
+    const formData = {
+      title: e.target[0].value,
+      release: e.target[1].value,
+      director: e.target[2].value,
+      image_url: e.target[3].value,
+      genre: e.target[4].value,
+      description: e.target[5].value
+    };
+
+    const reqObj = {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json'
+      },
+      body: JSON.stringify(formData)
+    };
+
+    fetch('http://localhost:3000/movies', reqObj)
+      .then(resp => resp.json())
+      .then(movie => renderMovie(movie));
 
     movieForm.reset();
   });
 }
 
-
 function toggleDescription() {
-    const main = document.querySelector('main');
-    main.addEventListener('click', function(e) {
-        if(e.target.className === "movie-image") {
-            e.target.style.display="none";
-            e.target.nextElementSibling.style.display="block";
-        }
+  const main = document.querySelector('main');
+  main.addEventListener('click', function(e) {
+    if (e.target.className === 'movie-image') {
+      e.target.style.display = 'none';
+      e.target.nextElementSibling.style.display = 'block';
+    }
 
-        if(e.target.className === "card-description") {
-            e.target.style.display="none";
-            e.target.previousElementSibling.style.display="inline-block";
-        }
-    });
+    if (e.target.className === 'card-description') {
+      e.target.style.display = 'none';
+      e.target.previousElementSibling.style.display = 'inline-block';
+    }
+  });
 }
-
 
 function toggleForm() {
   const addBtn = document.getElementById('addBtn');
@@ -105,7 +97,6 @@ function toggleForm() {
     }
   });
 }
-
 
 function toggleGenreFilter() {
   const genreBtn = document.getElementById('genreBtn');
@@ -121,10 +112,9 @@ function toggleGenreFilter() {
   });
 }
 
-
 function genreFiltering() {
-  const genreFilterBtn = document.querySelector("#genre-filter")
-  const movieCards = document.querySelector("main").children
+  const genreFilterBtn = document.querySelector('#genre-filter');
+  const movieCards = document.querySelector('main').children;
 
   genreFilterBtn.addEventListener('change', function(e) {
     const selectedGenre = event.target.value;
@@ -166,35 +156,36 @@ function toggleSignIn() {
 }
 
 function signInFetch() {
-  signInForm.addEventListener('submit', function() {
-    event.preventDefault();
-
-    userContainerToggle.style.display = 'block';
-    let user = event.target.children[1].value;
-    const signInBtn = document.querySelector('#signInBtn');
-
+  signInForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    currentUser = e.target[0].value
+    
     const configObj = {
       method: 'POST',
       headers: {
         'Content-type': 'application/json',
-        Accept: 'application/json'
+        'Accept': 'application/json'
       },
-      body: JSON.stringify({ username: user })
+      body: JSON.stringify({ username: currentUser })
     };
-
+    
     fetch('http://localhost:3000/viewers', configObj)
-      .then(resp => resp.json())
-      .then(userData => {
-        console.log(userData);
-        renderUser(userData);
-      });
+    .then(resp => resp.json())
+    .then(viewerData => {
+      renderUser(viewerData);
+    });
+    
+    userContainerToggle.style.display = 'block';
+
     event.target.reset();
     signInForm.style.display = 'none';
-    signInBtn.innerHTML = 'Sign Out';
 
-    //debugger
+    const signInBtn = document.querySelector('#signInBtn');
+    signInBtn.innerHTML = 'Sign Out';
   });
 }
+
+
 function renderUser(userData) {
   const userName = document.createElement('h2');
   userName.innerHTML = `Welcome ${userData.username}!`;
@@ -203,16 +194,18 @@ function renderUser(userData) {
 
   console.log('she made it!');
 }
+
+
 function watchList() {
   const movieCards = document.querySelector('main');
 
   movieCards.addEventListener('click', function() {
     if (event.target.innerHTML == 'Add to Watchlist') {
-      const movieID = event.target.parentElement.children[10].id;
+      const movieID = event.target.parentElement.dataset.id;
       const userID = userContainer.children[1].dataset.id;
-      event.target.innerHTML = "Added to Watchlist!"
-     event.target.className ="added"
-     event.target.disabled="disabled"
+      event.target.innerHTML = 'Added to Watchlist!';
+      event.target.className = 'added';
+      event.target.disabled = 'disabled';
       const configObj = {
         method: 'POST',
         headers: {
@@ -250,5 +243,3 @@ function renderWishList(watchlistData) {
       userContainer.innerHTML += userCard;
     });
 }
-
-

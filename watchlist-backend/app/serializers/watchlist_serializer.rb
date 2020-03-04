@@ -1,5 +1,7 @@
 class WatchlistSerializer
-   
+  include FastJsonapi::ObjectSerializer
+  attributes  :id, :movie_id, :viewer_id, :watched
+  
 def initialize(watchlist_object)
   @watchlist = watchlist_object
  end
