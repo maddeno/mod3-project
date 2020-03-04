@@ -7,7 +7,7 @@ class ViewersController < ApplicationController
     def show
         viewer = Viewer.find_or_create_by(username: params[:username])
         render json: viewer, :include=>[:id,:username,:watchlists]
-        # {:watchlists =>{:only =>[:movie_id, :viewer_id, :watched]}}
+        # {:watchlists =>{:only =>[:movie_id, :viewer_id, :watched]}
     end
 
     def create
