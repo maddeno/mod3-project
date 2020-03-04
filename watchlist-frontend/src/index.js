@@ -3,7 +3,7 @@ let genreFilter = false;
 let signInFormToggle = false;
 const signInForm = document.querySelector('#sign-in-form');
 const NavButtons = document.querySelector('#buttons-container');
-const userContainerToggle = document.getElementsByClassName('user-info')[0];
+// const userContainerToggle = document.getElementsByClassName('user-info')[0];
 const userContainer = document.getElementsByClassName('user-info')[0];
 let currentUser
 
@@ -12,9 +12,11 @@ toggleForm();
 toggleGenreFilter();
 formListener();
 genreFiltering();
+toggleDescription();
+
+
 toggleSignIn();
 signInFetch();
-toggleDescription();
 
 
 function fetchMovies() {
@@ -155,14 +157,24 @@ function toggleSignIn() {
     }
 
     if (event.target.innerHTML === 'Sign Out') {
-
-      const userName = document.getElementsByClassName("user-info")[0]
-      //userName.innerHTML = ""
-      userContainerToggle.style.display = 'none';
-      event.target.innerHTML = 'Sign In';
-     
+        userContainer.children[0].innerHTML = ''
+        userContainer.style = 'display: none';
+        event.target.innerHTML = 'Sign In';
+        reEnableButtons()
     }
   });
+}
+
+
+function reEnableButtons(){
+    const movieCards = document.querySelector('main').children;
+    
+    for (i = 0; i < movieCards.length; i++) {
+        const button = movieCards[i].children[9]
+        button.className = ''
+        button.innerHTML = 'Add to Watchlist'
+        button.disabled = false
+    }
 }
 
 
@@ -187,7 +199,7 @@ function signInFetch() {
       renderUser(viewerData);  
     }); 
     
-    userContainerToggle.style.display = 'block';
+    userContainer.style = 'display: block';
     event.target.reset();
     signInForm.style.display = 'none';
     const signInBtn = document.querySelector('#signInBtn');
@@ -197,62 +209,79 @@ function signInFetch() {
 
 
 function renderUser(viewerData) { 
-  const userName = document.createElement('h2');
-  userName.innerHTML = `Welcome ${viewerData.username}!`;
-  userName.dataset.id = viewerData.id;
-  userContainer.append(userName);
-  const watchUl = document.getElementById("user-details")
-  let i = 0
+    const watchUl = document.getElementById("user-details")
+    const userName = document.createElement('h2');
+    userName.innerHTML = `Welcome ${viewerData.username}!`;
+    userName.dataset.id = viewerData.id;
+    watchUl.append(userName);
+  
  
-  for( i = 0 ; viewerData.watchlists.length > i ; i++){
-
-   const watchListLi = `<li id=${viewerData.watchlists[i].movie.id}>${viewerData.watchlists[i].movie.title}
-   <input type="checkbox" value="true" id="watched"></li><br>`
-
-  watchUl.innerHTML += watchListLi
+  for(let i = 0; viewerData.watchlists.length > i ; i++){
+    const watchListLi = `<li id=${viewerData.watchlists[i].movie.id}>${viewerData.watchlists[i].movie.title}
+        <input type="checkbox" value="true" id="watched"></li><br>`
+    watchUl.innerHTML += watchListLi
+    disableListedMovieButtons(viewerData.watchlists[i].movie.id)
   }
-  watchList(viewerData)
+  watchList(userName)
 }
 
 
-function  watchList(userData) {
-  const movieCards = document.querySelector('main');
-  movieCards.addEventListener('click', function() {
-    if (event.target.innerHTML == 'Add to Watchlist') {
-      //debugger
-      const movieID = event.target.parentElement.dataset.id;
-     //debugger
-      const userID = userContainer.children[1].dataset.id;
-      event.target.innerHTML = 'Added to Watchlist!';
-      event.target.className = 'added';
-      event.target.disabled = 'disabled';
-      const configObj = {
-        method: 'POST',
-        headers: {
-          'Content-type': 'application/json',
-          Accept: 'application/json'
-        },
-        body: JSON.stringify({
-          movie_id: `${movieID}`,
-          viewer_id: `${userID}`,
-          watched: false
-        })
-      };
-
-      fetch('http://localhost:3000/watchlists', configObj)
-        .then(resp => resp.json())
-        .then(watchlistData => {
-          renderWishList(watchlistData);
-        })
-        .catch(function(error) {
-          alert('Bad things! Ragnarők!');
-          console.log(error.message);
-        });
+function disableListedMovieButtons(movie_id){
+    const movieCards = document.querySelector('main').children;
+    
+    for (i = 0; i < movieCards.length; i++) {
+        const button = movieCards[i].children[9]
+        if(movieCards[i].dataset.id == movie_id) {
+            button.className = 'added'
+            button.innerHTML = 'In Your Watchlist'
+            button.disabled = 'disabled'
+        }
     }
-  });
 }
 
-function renderWishList(watchlistData) {
+
+
+function  watchList(userName) {
+    const movieCards = document.querySelector('main');
+    if(userContainer.style != "display: none") {
+        movieCards.addEventListener('click', function() {
+            const movieID = event.target.parentElement.dataset.id;
+            const userID = userName.dataset.id;
+
+            if(event.target.innerHTML == 'Add to Watchlist') {
+                event.target.innerHTML = 'In you Watchlist';
+                event.target.className = 'added';
+                event.target.disabled = 'disabled'
+                
+                const configObj = {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json',
+                        Accept: 'application/json'
+                    },
+                    body: JSON.stringify({
+                        movie_id: `${movieID}`,
+                        viewer_id: `${userID}`,
+                        watched: false
+                    })
+                };
+                fetch('http://localhost:3000/watchlists', configObj)
+                .then(resp => resp.json())
+                .then(watchlistData => {
+                    renderWatchList(watchlistData);
+                })
+                .catch(function(error) {
+                    alert('Bad things! Ragnarők!');
+                    console.log(error.message);
+                });
+
+            }
+        })
+    }
+}
+
+
+function renderWatchList(watchlistData) {
   const movieID = watchlistData.movie_id;
   const viewerID = watchlistData.viewer_id
 fetch(`http://localhost:3000/viewers/${viewerID}`)
