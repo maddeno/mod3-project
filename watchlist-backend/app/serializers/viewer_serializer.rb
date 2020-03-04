@@ -1,4 +1,6 @@
 class ViewerSerializer
   include FastJsonapi::ObjectSerializer
-  attributes 
+  attributes :username , :id
+  has_many :watchlists
+
 end
