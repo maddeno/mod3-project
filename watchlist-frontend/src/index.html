@@ -21,8 +21,9 @@
       <button id="addBtn">Add Movie</button>    <button id="genreBtn">Browse by Genre</button>    <button id="signInBtn">Sign In</button>
     </div>
 
+    <div class="row">
 
-    <div id="genre-filter" style="display: none"><br/>
+    <div class="column" id="genre-filter" style= "display : none"><br/>
       <label for="select-genre">Filter Movies By Genre:</label>
       <select id="genre-dropdown" name="select-genre">
         <option value="Action">Action</option>
@@ -38,7 +39,7 @@
     </div>
    
 
-    <div class="form-container" style="display:none">
+    <div class="form-container column" style="display:none">
       <form id="add-movie-form" class="add-movie-form">
         <h3>Add a Movie</h3>
 
@@ -113,7 +114,29 @@
       </form>
     </div>
 
+    <div class="column" id="sign-in-form" style="display: none">
+      <form>
+        <h3>Sign in Or Sign up!</h3>
+        <input type="text"
+        name="username"
+        value=""
+        placeholder="username..."
+        class="input-text">
+        <input
+          type="submit"
+          name="submit"
+          value="Sign In"
+          class="submit"
+        />
+      </form>
 
+      
+    </div>
+    <div class ="column user-info" style="display: none">
+      <ul id="user-details"></ul>
+      </div>
+
+  </div>
     <main>
       
     </main>

@@ -17,7 +17,9 @@ body {
     height: 190px;
     text-align: center;
   }
-  
+  button.added{
+    background-color: red;
+  }
   header h2 {
     padding: 10px;
     margin: 0;
@@ -26,11 +28,24 @@ body {
   #buttons-container {
     text-align: center;
   }
+  .column {
+    float: left;
+    width: 33.33%;
+    text-align: center
+  }
+  
+  /* Clear floats after the columns */
+  .row:after {
+    content: "";
+    display: table;
+    clear: both;
+    
+  }
 
   div.form-container {
     font-family: 'Trebuchet MS';
     background-color: #eeeeee;
-    height: 300px;
+    height: 230px;
     width: 225px;
     box-shadow: 10px 10px black;
     padding: 10px;
@@ -50,11 +65,36 @@ body {
     font-size: 1.2em;
     font-family: 'Trebuchet MS';
     background-color: #eeeeee;
-    height: 100px;
+    height: 230px;
     width: 200px;
     box-shadow: 10px 10px black;
     padding: 10px;
     border-radius: 10px; 
+    text-align: center;
+
+  }
+  .user-info{
+     
+    font-size: 1.2em;
+    font-family: 'Trebuchet MS';
+    background-color: #eeeeee;
+    height: 230px;
+    width: 200px;
+    box-shadow: 10px 10px black;
+    padding: 10px;
+    border-radius: 10px; 
+    text-align: left;
+  }
+  #sign-in-form{
+    font-size: 1.2em;
+    font-family: 'Trebuchet MS';
+    background-color: #eeeeee;
+    height: 230px;
+    width: 200px;
+    box-shadow: 10px 10px black;
+    padding: 10px;
+    border-radius: 10px; 
+    text-align: center;
   }
   
   main {
