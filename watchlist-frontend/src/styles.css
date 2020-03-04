@@ -37,11 +37,16 @@ body {
     border-radius: 10px;
   }
 
+  .movie-image {
+    margin-bottom: 25px;
+  }
+
   #add-movie-form {
     font-size: 1.2em;
   }
 
   #genre-filter {
+    text-align: center;
     font-size: 1.2em;
     font-family: 'Trebuchet MS';
     background-color: #eeeeee;
