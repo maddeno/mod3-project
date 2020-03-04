@@ -35,4 +35,3 @@ movie_nineteen = Movie.create(title: "Joker", release: "2019", director: "Todd P
     Viewer.create(username: Faker::Name.first_name)
 end
 
-Watchlist.create(movie_id:1, viewer_id:23, watched: false)

@@ -1,4 +1,3 @@
-class MovieSerializer
-  include FastJsonapi::ObjectSerializer
-  attributes :title, :release, :director, :image_url, :genre, :description
+class MovieSerializer < ActiveModel::Serializer
+  attributes :id,:title, :release, :director, :image_url, :genre, :description
 end
