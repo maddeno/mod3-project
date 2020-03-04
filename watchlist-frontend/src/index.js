@@ -17,26 +17,29 @@ signInFetch();
 watchList();
 toggleDescription();
 
+
 function fetchMovies() {
   fetch('http://localhost:3000/movies')
     .then(resp => resp.json())
     .then(movieData => movieData.forEach(movie => renderMovie(movie)));
 }
 
+
 function renderMovie(movie) {
-  const movieCard = `<div data-id=${movie.id} class="card" style="display: block">
+  const movieCard = `<div data-genre=${movie.genre} data-id=${movie.id} class="card" style="display: block">
         <h2>${movie.title}</h2>
         <img style="display: inline-block" src=${movie.image_url} class="movie-image" height="240" width="175" />
         <p style="display: none" class="card-description">${movie.description}</p>
         <li>Directed By: ${movie.director}</li>
         <br><li>Released: ${movie.release}</li>
-        <br><li>Genre: ${movie.genre}</li><br>
+        <br><li id="card-genre">Genre: ${movie.genre}</li><br>
         <button id=${movie.id}>Add to Watchlist</button>
     </div>`;
 
   const main = document.querySelector('main');
   main.innerHTML += movieCard;
 }
+
 
 function formListener() {
   const movieForm = document.getElementById('add-movie-form');
@@ -70,6 +73,7 @@ function formListener() {
   });
 }
 
+
 function toggleDescription() {
   const main = document.querySelector('main');
   main.addEventListener('click', function(e) {
@@ -85,6 +89,7 @@ function toggleDescription() {
   });
 }
 
+
 function toggleForm() {
   const addBtn = document.getElementById('addBtn');
   const formContainer = document.querySelector('.form-container');
@@ -97,6 +102,7 @@ function toggleForm() {
     }
   });
 }
+
 
 function toggleGenreFilter() {
   const genreBtn = document.getElementById('genreBtn');
@@ -112,27 +118,29 @@ function toggleGenreFilter() {
   });
 }
 
+
 function genreFiltering() {
   const genreFilterBtn = document.querySelector('#genre-filter');
   const movieCards = document.querySelector('main').children;
 
   genreFilterBtn.addEventListener('change', function(e) {
-    const selectedGenre = event.target.value;
-
+    const selectedGenre = e.target.value;
+    
     for (i = 0; i < movieCards.length; i++) {
-      movieCards[i].style.display = 'block';
-    }
-    for (i = 0; i < movieCards.length; i++) {
-      if (selectedGenre === 'None') {
         movieCards[i].style.display = 'block';
-      } else if (
-        movieCards[i].children[8].innerHTML != `Genre: ${selectedGenre}`
-      ) {
-        movieCards[i].style.display = 'none';
-      }
+    }
+
+    if(selectedGenre != 'None') {
+        for(i=0; i < movieCards.length; i++) {
+            if(movieCards[i].dataset.genre != selectedGenre) {
+                movieCards[i].style.display = 'none';
+            }
+        }
     }
   });
 }
+
+
 function toggleSignIn() {
   const signInBtn = document.querySelector('#signInBtn');
 
@@ -145,15 +153,15 @@ function toggleSignIn() {
         signInForm.style.display = 'none';
       }
     }
+
     if (event.target.innerHTML === 'Sign Out') {
-      console.log('im out!');
-      //debugger
       userContainerToggle.style.display = 'none';
       event.target.innerHTML = 'Sign In';
       userContainer.children[1].remove();
     }
   });
 }
+
 
 function signInFetch() {
   signInForm.addEventListener('submit', function(e) {
@@ -172,7 +180,9 @@ function signInFetch() {
     fetch('http://localhost:3000/viewers', configObj)
     .then(resp => resp.json())
     .then(viewerData => {
-      renderUser(viewerData);
+        console.log(viewerData)
+        renderUser(viewerData);
+
     });
     
     userContainerToggle.style.display = 'block';
@@ -186,13 +196,12 @@ function signInFetch() {
 }
 
 
-function renderUser(userData) {
+function renderUser(viewerData) {
   const userName = document.createElement('h2');
-  userName.innerHTML = `Welcome ${userData.username}!`;
-  userName.dataset.id = userData.id;
+  userName.innerHTML = `Welcome ${viewerData.username}!`;
+  userName.dataset.id = viewerData.id;
   userContainer.append(userName);
 
-  console.log('she made it!');
 }
 
 
@@ -218,10 +227,10 @@ function watchList() {
           watched: false
         })
       };
+
       fetch('http://localhost:3000/watchlists', configObj)
         .then(resp => resp.json())
         .then(watchlistData => {
-          //console.log(watchlistData);
           renderWishList(watchlistData);
         })
         .catch(function(error) {
