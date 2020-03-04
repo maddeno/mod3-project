@@ -18,7 +18,7 @@ body {
     text-align: center;
   }
   button.added{
-    background-color: red;
+    background-color: rgb(86, 127, 216);
   }
   header h2 {
     padding: 10px;
