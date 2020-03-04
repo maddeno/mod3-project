@@ -14,7 +14,6 @@ formListener();
 genreFiltering();
 toggleSignIn();
 signInFetch();
-watchList();
 toggleDescription();
 
 function fetchMovies() {
@@ -24,6 +23,7 @@ function fetchMovies() {
 }
 
 function renderMovie(movie) {
+
   const movieCard = `<div data-id=${movie.id} class="card" style="display: block">
         <h2>${movie.title}</h2>
         <img style="display: inline-block" src=${movie.image_url} class="movie-image" height="240" width="175" />
@@ -115,7 +115,7 @@ function toggleGenreFilter() {
 function genreFiltering() {
   const genreFilterBtn = document.querySelector('#genre-filter');
   const movieCards = document.querySelector('main').children;
-
+  
   genreFilterBtn.addEventListener('change', function(e) {
     const selectedGenre = event.target.value;
 
@@ -126,7 +126,7 @@ function genreFiltering() {
       if (selectedGenre === 'None') {
         movieCards[i].style.display = 'block';
       } else if (
-        movieCards[i].children[8].innerHTML != `Genre: ${selectedGenre}`
+        movieCards[i].children[7].innerHTML != `Genre: ${selectedGenre}`
       ) {
         movieCards[i].style.display = 'none';
       }
@@ -146,11 +146,11 @@ function toggleSignIn() {
       }
     }
     if (event.target.innerHTML === 'Sign Out') {
-      console.log('im out!');
-      //debugger
+      const userName = document.getElementsByClassName("user-info")[0]
+      //userName.innerHTML = ""
       userContainerToggle.style.display = 'none';
       event.target.innerHTML = 'Sign In';
-      userContainer.children[1].remove();
+     
     }
   });
 }
@@ -159,7 +159,7 @@ function signInFetch() {
   signInForm.addEventListener('submit', function(e) {
     e.preventDefault();
     currentUser = e.target[0].value
-    
+
     const configObj = {
       method: 'POST',
       headers: {
@@ -172,36 +172,46 @@ function signInFetch() {
     fetch('http://localhost:3000/viewers', configObj)
     .then(resp => resp.json())
     .then(viewerData => {
+      console.log(viewerData)
       renderUser(viewerData);
-    });
-    
+      
+    }); 
     userContainerToggle.style.display = 'block';
-
     event.target.reset();
     signInForm.style.display = 'none';
-
     const signInBtn = document.querySelector('#signInBtn');
     signInBtn.innerHTML = 'Sign Out';
   });
 }
 
 
-function renderUser(userData) {
+function renderUser(viewerData) { 
   const userName = document.createElement('h2');
-  userName.innerHTML = `Welcome ${userData.username}!`;
-  userName.dataset.id = userData.id;
+  userName.innerHTML = `Welcome ${viewerData.username}!`;
+  userName.dataset.id = viewerData.id;
   userContainer.append(userName);
+  const watchUl = document.getElementById("user-details")
+  let i = 0
+ 
+  for( i = 0 ; viewerData.watchlists.length > i ; i++){
 
-  console.log('she made it!');
+   const watchListLi = `<li id=${viewerData.watchlists[i].movie.id}>${viewerData.watchlists[i].movie.title}
+   <input type="checkbox" value="true" id="watched"></li><br>`
+
+  watchUl.innerHTML += watchListLi
+
+  }
+  watchList(viewerData)
 }
 
 
-function watchList() {
+function  watchList(userData) {
   const movieCards = document.querySelector('main');
-
   movieCards.addEventListener('click', function() {
     if (event.target.innerHTML == 'Add to Watchlist') {
+      //debugger
       const movieID = event.target.parentElement.dataset.id;
+     //debugger
       const userID = userContainer.children[1].dataset.id;
       event.target.innerHTML = 'Added to Watchlist!';
       event.target.className = 'added';
@@ -221,7 +231,7 @@ function watchList() {
       fetch('http://localhost:3000/watchlists', configObj)
         .then(resp => resp.json())
         .then(watchlistData => {
-          //console.log(watchlistData);
+          console.log("watchlist",watchlistData);
           renderWishList(watchlistData);
         })
         .catch(function(error) {
@@ -233,13 +243,20 @@ function watchList() {
 }
 function renderWishList(watchlistData) {
   const movieID = watchlistData.movie_id;
+  const viewerID = watchlistData.viewer_id
+fetch(`http://localhost:3000/viewers/${viewerID}`)
+.then(resp => resp.json())
+.then(viewerData => {console.log("viewer-data",viewerData)
+})
+
   fetch(`http://localhost:3000/movies/${movieID}`)
     .then(resp => resp.json())
     .then(movieData => {
-      console.log(movieData);
+      console.log("movie-data", movieData);
+      const ul = document.getElementById("user-details")
       const userCard = `<li id=${movieData.id}>${movieData.title}
   <input type="checkbox" value="true" id="watched"></li><br>`;
 
-      userContainer.innerHTML += userCard;
+      ul.innerHTML += userCard;
     });
 }
