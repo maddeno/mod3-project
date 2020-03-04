@@ -14,7 +14,18 @@ genreFiltering();
 toggleSignIn();
 signInFetch();
 
+
 watchList();
+
+const NavButtons = document.querySelector("#buttons-container")
+
+fetchMovies()
+toggleForm()
+toggleGenreFilter()
+formListener()
+genreFiltering()
+toggleDescription()
+
 
 function fetchMovies() {
   fetch('http://localhost:3000/movies')
@@ -22,23 +33,52 @@ function fetchMovies() {
     .then(movieData => movieData.forEach(movie => renderMovie(movie)));
 }
 
+
 function renderMovie(movie) {
-  const movieCard = `<div class="card" style="display: block">
-            <h2>${movie.title}</h2>
-            <img src=${movie.image_url} height="240" width="175" /><br><br>
-            <li>Directed By: ${movie.director}</li>
-            <br><li>Released: ${movie.release}</li>
-            <br><li>Genre: ${movie.genre}</li><br>
-            <button id=${movie.id}>Add to Watchlist</button>
-        </div>`;
-  const main = document.querySelector('main');
-  main.innerHTML += movieCard;
+
+    const movieCard = `<div data-id=${movie.id} class="card" style="display: block">
+        <h2>${movie.title}</h2>
+        <img style="display: inline-block" src=${movie.image_url} class="movie-image" height="240" width="175" />
+        <p style="display: none" class="card-description">${movie.description}</p>
+        <li>Directed By: ${movie.director}</li>
+        <br><li>Released: ${movie.release}</li>
+        <br><li>Genre: ${movie.genre}</li><br>
+        <button id=${movie.id}>Add to Watchlist</button>
+    </div>`
+
+    const main = document.querySelector('main');
+    main.innerHTML += movieCard;
 }
 
+
+
 function formListener() {
-  const movieForm = document.getElementById('add-movie-form');
-  movieForm.addEventListener('submit', function(e) {
-    e.preventDefault();
+    const movieForm = document.getElementById('add-movie-form')
+
+    movieForm.addEventListener('submit', function(e) {
+        e.preventDefault()
+        
+        const formData = {
+            title: e.target[0].value,
+            release: e.target[1].value,
+            director: e.target[2].value,
+            image_url: e.target[3].value,
+            genre: e.target[4].value,
+            description: e.target[5].value
+        }
+        
+        const reqObj = {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        }
+
+        fetch('http://localhost:3000/movies', reqObj)
+        .then(resp => resp.json())
+        .then(movie => renderMovie(movie))
 
     const formData = {
       title: e.target[0].value,
@@ -66,6 +106,23 @@ function formListener() {
   });
 }
 
+
+function toggleDescription() {
+    const main = document.querySelector('main');
+    main.addEventListener('click', function(e) {
+        if(e.target.className === "movie-image") {
+            e.target.style.display="none";
+            e.target.nextElementSibling.style.display="block";
+        }
+
+        if(e.target.className === "card-description") {
+            e.target.style.display="none";
+            e.target.previousElementSibling.style.display="inline-block";
+        }
+    });
+}
+
+
 function toggleForm() {
   const addBtn = document.getElementById('addBtn');
   const formContainer = document.querySelector('.form-container');
@@ -78,6 +135,7 @@ function toggleForm() {
     }
   });
 }
+
 
 function toggleGenreFilter() {
   const genreBtn = document.getElementById('genreBtn');
@@ -93,13 +151,13 @@ function toggleGenreFilter() {
   });
 }
 
+
 function genreFiltering() {
-  const genreFilterBtn = document.querySelector('#genre-filter');
-  const movieCards = document.querySelector('main').children;
+  const genreFilterBtn = document.querySelector("#genre-filter")
+  const movieCards = document.querySelector("main").children
+
   genreFilterBtn.addEventListener('change', function(e) {
-    console.log('yes!');
     const selectedGenre = event.target.value;
-    //debugger;
 
     for (i = 0; i < movieCards.length; i++) {
       movieCards[i].style.display = 'block';
