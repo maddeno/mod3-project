@@ -17,20 +17,12 @@ signInFetch();
 
 watchList();
 
-const NavButtons = document.querySelector("#buttons-container")
-
-fetchMovies()
-toggleForm()
-toggleGenreFilter()
-formListener()
-genreFiltering()
-toggleDescription()
 
 
 function fetchMovies() {
   fetch('http://localhost:3000/movies')
-    .then(resp => resp.json())
-    .then(movieData => movieData.forEach(movie => renderMovie(movie)));
+  .then(resp => resp.json())
+  .then(movieData => movieData.forEach(movie => renderMovie(movie)));
 }
 
 
@@ -79,28 +71,6 @@ function formListener() {
         fetch('http://localhost:3000/movies', reqObj)
         .then(resp => resp.json())
         .then(movie => renderMovie(movie))
-
-    const formData = {
-      title: e.target[0].value,
-      release: e.target[1].value,
-      director: e.target[2].value,
-      image_url: e.target[3].value,
-      genre: e.target[4].value,
-      description: e.target[5].value
-    };
-
-    const reqObj = {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
-      },
-      body: JSON.stringify(formData)
-    };
-
-    fetch('http://localhost:3000/movies', reqObj)
-      .then(resp => resp.json())
-      .then(movie => renderMovie(movie));
 
     movieForm.reset();
   });
