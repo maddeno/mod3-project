@@ -147,7 +147,7 @@ function toggleSignIn() {
     }
     if (event.target.innerHTML === 'Sign Out') {
       const userName = document.getElementsByClassName("user-info")[0]
-      //userName.innerHTML = ""
+  
       userContainerToggle.style.display = 'none';
       event.target.innerHTML = 'Sign In';
      
