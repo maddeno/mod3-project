@@ -127,6 +127,10 @@ function genreFiltering() {
     
     for (i = 0; i < movieCards.length; i++) {
         movieCards[i].style.display = 'block';
+<<<<<<< HEAD
+=======
+
+>>>>>>> 8d829d62be022c3d73b8068b3d0c75451c0c9492
     }
 
     if(selectedGenre != 'None') {
@@ -156,9 +160,13 @@ function toggleSignIn() {
     if (event.target.innerHTML === 'Sign Out') {
 
       const userName = document.getElementsByClassName("user-info")[0]
+<<<<<<< HEAD
   
 
 
+=======
+      //userName.innerHTML = ""
+>>>>>>> 8d829d62be022c3d73b8068b3d0c75451c0c9492
       userContainerToggle.style.display = 'none';
       event.target.innerHTML = 'Sign In';
      
@@ -184,10 +192,16 @@ function signInFetch() {
     fetch('http://localhost:3000/viewers', configObj)
     .then(resp => resp.json())
     .then(viewerData => {
+<<<<<<< HEAD
         console.log(viewerData)
         renderUser(viewerData);
 
     });
+=======
+      console.log(viewerData)
+      renderUser(viewerData);  
+    }); 
+>>>>>>> 8d829d62be022c3d73b8068b3d0c75451c0c9492
     
     userContainerToggle.style.display = 'block';
     event.target.reset();
@@ -198,7 +212,11 @@ function signInFetch() {
 }
 
 
+<<<<<<< HEAD
 function renderUser(viewerData) {
+=======
+function renderUser(viewerData) { 
+>>>>>>> 8d829d62be022c3d73b8068b3d0c75451c0c9492
   const userName = document.createElement('h2');
   userName.innerHTML = `Welcome ${viewerData.username}!`;
   userName.dataset.id = viewerData.id;
@@ -212,11 +230,16 @@ function renderUser(viewerData) {
    <input type="checkbox" value="true" id="watched"></li><br>`
 
   watchUl.innerHTML += watchListLi
+<<<<<<< HEAD
 
 
   }
   watchList(viewerData)
 
+=======
+  }
+  watchList(viewerData)
+>>>>>>> 8d829d62be022c3d73b8068b3d0c75451c0c9492
 }
 
 
@@ -247,10 +270,13 @@ function  watchList(userData) {
       fetch('http://localhost:3000/watchlists', configObj)
         .then(resp => resp.json())
         .then(watchlistData => {
+<<<<<<< HEAD
 
           console.log("watchlist",watchlistData);
 
 
+=======
+>>>>>>> 8d829d62be022c3d73b8068b3d0c75451c0c9492
           renderWishList(watchlistData);
         })
         .catch(function(error) {
@@ -260,6 +286,7 @@ function  watchList(userData) {
     }
   });
 }
+
 function renderWishList(watchlistData) {
   const movieID = watchlistData.movie_id;
   const viewerID = watchlistData.viewer_id
