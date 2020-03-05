@@ -20,6 +20,13 @@ body {
   button.added{
     background-color: rgb(86, 127, 216);
   }
+
+  .watched {
+    background-color: rgb(86, 127, 216);
+    border-radius: 7px;
+    font-size: .8em;
+  }
+
   header h2 {
     padding: 10px;
     margin: 0;
@@ -27,8 +34,8 @@ body {
 
   #buttons-container {
     text-align: center;
-   
   }
+
   .column {
     float: left;
     width: 33.33%;
