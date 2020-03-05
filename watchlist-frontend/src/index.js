@@ -211,15 +211,18 @@ function signInFetch() {
 
 function renderUser(viewerData) { 
     const watchUl = document.getElementById("user-details")
-    const userName = document.createElement('h2');
-    userName.innerHTML = `Welcome ${viewerData.username}!`;
+    const userName = document.createElement('h3');
+    userName.innerHTML = `Welcome ${viewerData.username}, to your Watchlist!`;
     userName.dataset.id = viewerData.id;
     watchUl.append(userName);
   
+
+      
  
   for(let i = 0; viewerData.watchlists.length > i ; i++){
-    const watchListLi = `<li id=${viewerData.watchlists[i].movie.id}>${viewerData.watchlists[i].movie.title}
-        <input type="checkbox" value="true" id="watched"></li><br>`
+    const watchListLi = 
+    `<li id=${viewerData.watchlists[i].movie.id}>${viewerData.watchlists[i].movie.title}
+        <input type="checkbox" value="true" id="watched"></li><hr><br>`
     watchUl.innerHTML += watchListLi
     disableListedMovieButtons(viewerData.watchlists[i].movie.id)
   }
