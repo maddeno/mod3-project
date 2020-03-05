@@ -4,7 +4,7 @@ let signInFormToggle = false;
 let currentUser = null;
 const signInForm = document.querySelector('#sign-in-form');
 const NavButtons = document.querySelector('#buttons-container');
-const userContainer = document.getElementsByClassName('user-info')[0];
+const userContainer = document.getElementsByClassName('flex-container')[0];
 
 fetchMovies();
 toggleForm();
@@ -208,17 +208,15 @@ function signInFetch() {
 
 function renderUser(viewerData) { 
     const watchUl = document.getElementById("user-details")
-    const userName = document.createElement('h2');
-    userName.innerHTML = `Welcome ${viewerData.username}! Here's your Watchlist:`;
+    const userName = document.createElement('h3');
+    userName.innerHTML = `Welcome ${viewerData.username}, to your Watchlist!`;
     userName.dataset.id = viewerData.id;
     userName.dataset.name = viewerData.username;
     watchUl.append(userName);
-  
- 
-  for(let i = 0; viewerData.watchlists.length > i ; i++){
-    const watchListLi = `<li id=${viewerData.watchlists[i].movie.id}>${viewerData.watchlists[i].movie.title}
-        <input type="checkbox" value="true" id="watched"></li><br>`
-    watchUl.innerHTML += watchListLi
+    for(let i = 0; viewerData.watchlists.length > i ; i++){
+      const watchListLi = `<li id=${viewerData.watchlists[i].movie.id}>${viewerData.watchlists[i].movie.title} <button id="watched" class="user-buttons"> Mark as Watched </button>  <button id="remove" class="user-buttons"> Remove from Watchlist </button></li><br>`
+      watchUl.innerHTML += watchListLi
+      // debugger
     disableListedMovieButtons(viewerData.watchlists[i].movie.id)
   }
   watchList(userName)
@@ -297,8 +295,7 @@ fetch(`http://localhost:3000/viewers/${viewerID}`)
     .then(movieData => {
       console.log("movie-data", movieData);
       const ul = document.getElementById("user-details")
-      const userCard = `<li id=${movieData.id}>${movieData.title}
-  <input type="checkbox" value="true" id="watched"></li><br>`;
+      const userCard = `<li id=${movieData.id}>${movieData.title} <button id="watched" class="user-buttons"> Mark as Watched </button>  <button id="remove" class="user-buttons"> Remove from Watchlist </button></li><br>`
 
       ul.innerHTML += userCard;
     });

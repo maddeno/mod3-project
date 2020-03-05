@@ -27,6 +27,7 @@ body {
 
   #buttons-container {
     text-align: center;
+   
   }
   .column {
     float: left;
@@ -61,7 +62,6 @@ body {
   }
 
   #genre-filter {
-    text-align: center;
     font-size: 1.2em;
     font-family: 'Trebuchet MS';
     background-color: #eeeeee;
@@ -71,20 +71,45 @@ body {
     padding: 10px;
     border-radius: 10px; 
     text-align: center;
-
   }
-  .user-info{
-     
+  h3{
+   border: black;
+   padding: 1px;
+   background-color: goldenrod;
+   text-align: center;
+  }
+  .row{
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+    grid-gap: 100px;
+    padding-top: 10px;
+    padding-bottom: 30px;
+  }
+  
+  .user-buttons {
+    text-align: center;
+    font-size: .8em;
+    color: black;
+    background-color: rgb(148, 203, 93);
+    border-radius: 7px;
+  }
+
+  .flex-container{
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
+    border-color: black;
     font-size: 1.2em;
     font-family: 'Trebuchet MS';
     background-color: #eeeeee;
     height: 230px;
-    width: 600px;
+    width: auto;
     box-shadow: 10px 10px black;
     padding: 10px;
-    border-radius: 10px; 
+    border-radius: 10px;
     text-align: left;
   }
+
   #sign-in-form{
     font-size: 1.2em;
     font-family: 'Trebuchet MS';
