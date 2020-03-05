@@ -102,13 +102,14 @@ body {
     font-size: 1.2em;
     font-family: 'Trebuchet MS';
     background-color: #eeeeee;
-    /* height: 230px; */
+    height: 230px;
     width: auto;
     box-shadow: 10px 10px black;
     padding: 10px;
-    
+    border-radius: 10px;
     text-align: left;
   }
+
   #sign-in-form{
     font-size: 1.2em;
     font-family: 'Trebuchet MS';
