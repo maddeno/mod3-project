@@ -14,7 +14,12 @@ genreFiltering();
 toggleDescription();
 toggleSignIn();
 signInFetch();
+
 removeMovieFromWatchlist()
+
+markAsWatched();
+
+
 
 function fetchMovies() {
   fetch('http://localhost:3000/movies')
@@ -220,6 +225,7 @@ function renderUser(viewerData) {
     disableListedMovieButtons(viewerData.watchlists[i].movie.id)
   }
   watchList(userName)
+  listenToUserDetails()
 }
 
 
@@ -301,6 +307,18 @@ fetch(`http://localhost:3000/viewers/${viewerID}`)
     });
 }
 
+function listenToUserDetails() {
+    const userDiv = document.getElementsByClassName('flex-container')
+    userDiv.addEventListener('click', function(e) {
+        if(e.target.id === 'watched') {
+            markAsWatched(e)
+        } else if(e.target.id === 'remove') {
+            removeMovieFromWatchlist(e)
+        }
+    })
+}
+
+
 
 function removeMovieFromWatchlist() {
   userContainer.addEventListener("click", function(event){
@@ -318,4 +336,28 @@ debugger
     }
 
   })
+}
+
+
+
+function markAsWatched() {
+   if(currentUser) {
+       debugger
+        const userDiv = document.getElementsByClassName('flex-container')
+        userDiv.addEventListener('click', function(e) {
+            if(e.target.id === 'watched') {
+                const movie = e.parentElement.id
+
+                reqObj = {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(movie)
+                }
+
+            }
+        })
+   }
 }
