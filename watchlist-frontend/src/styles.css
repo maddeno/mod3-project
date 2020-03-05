@@ -76,25 +76,34 @@ body {
    border: black;
    padding: 1px;
    background-color: goldenrod;
+   text-align: center;
   }
   .row{
-    position: sticky;
-    top:0;
     grid-template-columns: 1fr;
     grid-template-rows: auto;
     grid-gap: 100px;
     padding-top: 10px;
     padding-bottom: 30px;
   }
-  .user-info{
-    position: sticky;
-    top: 0;
+  
+  .user-buttons {
+    text-align: center;
+    font-size: .8em;
+    color: black;
+    background-color: rgb(148, 203, 93);
+    border-radius: 7px;
+  }
+
+  .flex-container{
+    overflow: auto;
+    display: flex;
+    flex-direction: column;
     border-color: black;
     font-size: 1.2em;
     font-family: 'Trebuchet MS';
     background-color: #eeeeee;
-    height: 230px;
-    width: 500px;
+    /* height: 230px; */
+    width: auto;
     box-shadow: 10px 10px black;
     padding: 10px;
     

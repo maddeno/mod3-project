@@ -4,7 +4,7 @@ let signInFormToggle = false;
 let currentUser = null;
 const signInForm = document.querySelector('#sign-in-form');
 const NavButtons = document.querySelector('#buttons-container');
-const userContainer = document.getElementsByClassName('user-info')[0];
+const userContainer = document.getElementsByClassName('flex-container')[0];
 
 fetchMovies();
 toggleForm();
@@ -193,17 +193,9 @@ function signInFetch() {
     fetch('http://localhost:3000/viewers', configObj)
     .then(resp => resp.json())
     .then(viewerData => {
-<<<<<<< HEAD
-        console.log(viewerData)
-        renderUser(viewerData);
-
-    });
-    
-=======
       currentUser = viewerData;
       renderUser(viewerData);  
     }); 
->>>>>>> ff09de3601c93658520a4a205d18894b3422e683
     userContainer.style = 'display: block';
     event.target.reset();
     signInForm.style.display = 'none';
@@ -226,8 +218,7 @@ function renderUser(viewerData) {
  
   for(let i = 0; viewerData.watchlists.length > i ; i++){
     const watchListLi = 
-    `<li id=${viewerData.watchlists[i].movie.id}>${viewerData.watchlists[i].movie.title}
-        <input type="checkbox" value="true" id="watched"></li><hr><br>`
+    `<li id=${viewerData.watchlists[i].movie.id}>${viewerData.watchlists[i].movie.title} <button id="watched" class="user-buttons"> Mark as Watched </button>  <button id="remove" class="user-buttons"> Remove from Watchlist </button></li><br>`
     watchUl.innerHTML += watchListLi
     disableListedMovieButtons(viewerData.watchlists[i].movie.id)
   }
