@@ -3,9 +3,7 @@ let genreFilter = false;
 let signInFormToggle = false;
 const signInForm = document.querySelector('#sign-in-form');
 const NavButtons = document.querySelector('#buttons-container');
-// const userContainerToggle = document.getElementsByClassName('user-info')[0];
 const userContainer = document.getElementsByClassName('user-info')[0];
-let currentUser
 
 fetchMovies();
 toggleForm();
@@ -13,8 +11,6 @@ toggleGenreFilter();
 formListener();
 genreFiltering();
 toggleDescription();
-
-
 toggleSignIn();
 signInFetch();
 
@@ -211,8 +207,9 @@ function signInFetch() {
 function renderUser(viewerData) { 
     const watchUl = document.getElementById("user-details")
     const userName = document.createElement('h2');
-    userName.innerHTML = `Welcome ${viewerData.username}!`;
+    userName.innerHTML = `Welcome ${viewerData.username}! Here's your Watchlist:`;
     userName.dataset.id = viewerData.id;
+    userName.dataset.name = viewerData.username;
     watchUl.append(userName);
   
  
@@ -243,41 +240,44 @@ function disableListedMovieButtons(movie_id){
 
 function  watchList(userName) {
     const movieCards = document.querySelector('main');
-    if(userContainer.style != "display: none") {
-        movieCards.addEventListener('click', function() {
-            const movieID = event.target.parentElement.dataset.id;
-            const userID = userName.dataset.id;
-
+    movieCards.addEventListener('click', function() {
+        const movieID = event.target.parentElement.dataset.id;
+        const userID = userName.dataset.id;
             if(event.target.innerHTML == 'Add to Watchlist') {
-                event.target.innerHTML = 'In you Watchlist';
-                event.target.className = 'added';
-                event.target.disabled = 'disabled'
-                
-                const configObj = {
-                    method: 'POST',
-                    headers: {
-                        'Content-type': 'application/json',
-                        Accept: 'application/json'
-                    },
-                    body: JSON.stringify({
-                        movie_id: `${movieID}`,
-                        viewer_id: `${userID}`,
-                        watched: false
+
+                if(userName.dataset.name === 'undefined') {
+                    event.target.innerHTML = 'Please Sign In'
+                } else {
+                    event.target.innerHTML = 'In your Watchlist';
+                    event.target.className = 'added';
+                    event.target.disabled = 'disabled'
+                    
+                    const configObj = {
+                        method: 'POST',
+                        headers: {
+                            'Content-type': 'application/json',
+                            Accept: 'application/json'
+                        },
+                        body: JSON.stringify({
+                            movie_id: `${movieID}`,
+                            viewer_id: `${userID}`,
+                            watched: false
+                        })
+                    };
+                    fetch('http://localhost:3000/watchlists', configObj)
+                    .then(resp => resp.json())
+                    .then(watchlistData => {
+                        renderWatchList(watchlistData);
                     })
-                };
-                fetch('http://localhost:3000/watchlists', configObj)
-                .then(resp => resp.json())
-                .then(watchlistData => {
-                    renderWatchList(watchlistData);
-                })
-                .catch(function(error) {
-                    alert('Bad things! Ragnarők!');
-                    console.log(error.message);
-                });
+                    .catch(function(error) {
+                        alert('Bad things! Ragnarők!');
+                        console.log(error.message);
+                    });
+                }
 
             }
-        })
-    }
+        
+    })
 }
 
 
