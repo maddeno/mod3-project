@@ -1,6 +1,7 @@
 let addMovie = false;
 let genreFilter = false;
 let signInFormToggle = false;
+let currentUser = null;
 const signInForm = document.querySelector('#sign-in-form');
 const NavButtons = document.querySelector('#buttons-container');
 const userContainer = document.getElementsByClassName('user-info')[0];
@@ -156,6 +157,7 @@ function toggleSignIn() {
         userContainer.children[0].innerHTML = ''
         userContainer.style = 'display: none';
         event.target.innerHTML = 'Sign In';
+        currentUser = null
         reEnableButtons()
     }
   });
@@ -177,7 +179,7 @@ function reEnableButtons(){
 function signInFetch() {
   signInForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    currentUser = e.target[0].value
+    // currentUser = e.target[0].value
 
     const configObj = {
       method: 'POST',
@@ -185,16 +187,15 @@ function signInFetch() {
         'Content-type': 'application/json',
         'Accept': 'application/json'
       },
-      body: JSON.stringify({ username: currentUser })
+      body: JSON.stringify({ username: e.target[0].value })
     };
     
     fetch('http://localhost:3000/viewers', configObj)
     .then(resp => resp.json())
     .then(viewerData => {
-      console.log(viewerData)
+      currentUser = viewerData;
       renderUser(viewerData);  
     }); 
-    
     userContainer.style = 'display: block';
     event.target.reset();
     signInForm.style.display = 'none';
@@ -239,14 +240,15 @@ function disableListedMovieButtons(movie_id){
 
 
 function  watchList(userName) {
+
     const movieCards = document.querySelector('main');
     movieCards.addEventListener('click', function() {
         const movieID = event.target.parentElement.dataset.id;
         const userID = userName.dataset.id;
             if(event.target.innerHTML == 'Add to Watchlist') {
 
-                if(userName.dataset.name === 'undefined') {
-                    event.target.innerHTML = 'Please Sign In'
+                if(!currentUser) {
+                    event.target.innerText = 'Please Sign In'
                 } else {
                     event.target.innerHTML = 'In your Watchlist';
                     event.target.className = 'added';
