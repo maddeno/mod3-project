@@ -1,11 +1,10 @@
 let addMovie = false;
 let genreFilter = false;
 let signInFormToggle = false;
+let currentUser = null;
 const signInForm = document.querySelector('#sign-in-form');
 const NavButtons = document.querySelector('#buttons-container');
-// const userContainerToggle = document.getElementsByClassName('user-info')[0];
 const userContainer = document.getElementsByClassName('user-info')[0];
-let currentUser
 
 fetchMovies();
 toggleForm();
@@ -13,8 +12,6 @@ toggleGenreFilter();
 formListener();
 genreFiltering();
 toggleDescription();
-
-
 toggleSignIn();
 signInFetch();
 
@@ -160,6 +157,7 @@ function toggleSignIn() {
         userContainer.children[0].innerHTML = ''
         userContainer.style = 'display: none';
         event.target.innerHTML = 'Sign In';
+        currentUser = null
         reEnableButtons()
     }
   });
@@ -181,7 +179,7 @@ function reEnableButtons(){
 function signInFetch() {
   signInForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    currentUser = e.target[0].value
+    // currentUser = e.target[0].value
 
     const configObj = {
       method: 'POST',
@@ -189,17 +187,23 @@ function signInFetch() {
         'Content-type': 'application/json',
         'Accept': 'application/json'
       },
-      body: JSON.stringify({ username: currentUser })
+      body: JSON.stringify({ username: e.target[0].value })
     };
     
     fetch('http://localhost:3000/viewers', configObj)
     .then(resp => resp.json())
     .then(viewerData => {
+<<<<<<< HEAD
         console.log(viewerData)
         renderUser(viewerData);
 
     });
     
+=======
+      currentUser = viewerData;
+      renderUser(viewerData);  
+    }); 
+>>>>>>> ff09de3601c93658520a4a205d18894b3422e683
     userContainer.style = 'display: block';
     event.target.reset();
     signInForm.style.display = 'none';
@@ -214,6 +218,7 @@ function renderUser(viewerData) {
     const userName = document.createElement('h3');
     userName.innerHTML = `Welcome ${viewerData.username}, to your Watchlist!`;
     userName.dataset.id = viewerData.id;
+    userName.dataset.name = viewerData.username;
     watchUl.append(userName);
   
 
@@ -246,42 +251,46 @@ function disableListedMovieButtons(movie_id){
 
 
 function  watchList(userName) {
-    const movieCards = document.querySelector('main');
-    if(userContainer.style != "display: none") {
-        movieCards.addEventListener('click', function() {
-            const movieID = event.target.parentElement.dataset.id;
-            const userID = userName.dataset.id;
 
+    const movieCards = document.querySelector('main');
+    movieCards.addEventListener('click', function() {
+        const movieID = event.target.parentElement.dataset.id;
+        const userID = userName.dataset.id;
             if(event.target.innerHTML == 'Add to Watchlist') {
-                event.target.innerHTML = 'In you Watchlist';
-                event.target.className = 'added';
-                event.target.disabled = 'disabled'
-                
-                const configObj = {
-                    method: 'POST',
-                    headers: {
-                        'Content-type': 'application/json',
-                        Accept: 'application/json'
-                    },
-                    body: JSON.stringify({
-                        movie_id: `${movieID}`,
-                        viewer_id: `${userID}`,
-                        watched: false
+
+                if(!currentUser) {
+                    event.target.innerText = 'Please Sign In'
+                } else {
+                    event.target.innerHTML = 'In your Watchlist';
+                    event.target.className = 'added';
+                    event.target.disabled = 'disabled'
+                    
+                    const configObj = {
+                        method: 'POST',
+                        headers: {
+                            'Content-type': 'application/json',
+                            Accept: 'application/json'
+                        },
+                        body: JSON.stringify({
+                            movie_id: `${movieID}`,
+                            viewer_id: `${userID}`,
+                            watched: false
+                        })
+                    };
+                    fetch('http://localhost:3000/watchlists', configObj)
+                    .then(resp => resp.json())
+                    .then(watchlistData => {
+                        renderWatchList(watchlistData);
                     })
-                };
-                fetch('http://localhost:3000/watchlists', configObj)
-                .then(resp => resp.json())
-                .then(watchlistData => {
-                    renderWatchList(watchlistData);
-                })
-                .catch(function(error) {
-                    alert('Bad things! Ragnarők!');
-                    console.log(error.message);
-                });
+                    .catch(function(error) {
+                        alert('Bad things! Ragnarők!');
+                        console.log(error.message);
+                    });
+                }
 
             }
-        })
-    }
+        
+    })
 }
 
 
