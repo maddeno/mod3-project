@@ -179,7 +179,6 @@ function reEnableButtons(){
 function signInFetch() {
   signInForm.addEventListener('submit', function(e) {
     e.preventDefault();
-    // currentUser = e.target[0].value
 
     const configObj = {
       method: 'POST',
@@ -196,6 +195,8 @@ function signInFetch() {
       currentUser = viewerData;
       renderUser(viewerData);  
     }); 
+
+    signInFormToggle = false
     userContainer.style = 'display: block';
     event.target.reset();
     signInForm.style.display = 'none';
@@ -301,4 +302,9 @@ fetch(`http://localhost:3000/viewers/${viewerID}`)
 
       ul.innerHTML += userCard;
     });
+}
+
+
+function removeMovieFromWatchlist() {
+
 }
