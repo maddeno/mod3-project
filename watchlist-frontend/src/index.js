@@ -14,7 +14,8 @@ genreFiltering();
 toggleDescription();
 toggleSignIn();
 signInFetch();
-markAsWatched();
+watchList();
+
 
 
 function fetchMovies() {
@@ -159,6 +160,7 @@ function toggleSignIn() {
         userContainer.style = 'display: none';
         event.target.innerHTML = 'Sign In';
         currentUser = null
+
         reEnableButtons()
     }
   });
@@ -214,13 +216,19 @@ function renderUser(viewerData) {
     userName.dataset.id = viewerData.id;
     userName.dataset.name = viewerData.username;
     watchUl.append(userName);
+    
+
     for(let i = 0; viewerData.watchlists.length > i ; i++){
-      const watchListLi = `<li id=${viewerData.watchlists[i].movie.id}>${viewerData.watchlists[i].movie.title} <button id="watched" class="user-buttons"> Mark as Watched </button>  <button id="remove" class="user-buttons"> Remove from Watchlist </button></li><br>`
-      watchUl.innerHTML += watchListLi
-      // debugger
-    disableListedMovieButtons(viewerData.watchlists[i].movie.id)
-  }
-  watchList(userName)
+        if(viewerData.watchlists[i].watched === true) {
+            let watchListLi = `<li id=${viewerData.watchlists[i].id}>${viewerData.watchlists[i].movie.title} <button id="watched" class="watched"> Watched </button>  <button id="remove" class="user-buttons"> Remove from Watchlist </button></li><br>`
+            watchUl.innerHTML += watchListLi
+        } else {
+            let watchListLi = `<li id=${viewerData.watchlists[i].id}>${viewerData.watchlists[i].movie.title} <button id="watched" class="user-buttons"> Mark as Watched </button>  <button id="remove" class="user-buttons"> Remove from Watchlist </button></li><br>`
+            watchUl.innerHTML += watchListLi
+        }
+
+        disableListedMovieButtons(viewerData.watchlists[i].movie.id)
+    }
   listenToUserDetails()
 }
 
@@ -240,17 +248,17 @@ function disableListedMovieButtons(movie_id){
 
 
 
-function  watchList(userName) {
-
+function  watchList() {
     const movieCards = document.querySelector('main');
     movieCards.addEventListener('click', function() {
         const movieID = event.target.parentElement.dataset.id;
-        const userID = userName.dataset.id;
+        
             if(event.target.innerHTML == 'Add to Watchlist') {
-
                 if(!currentUser) {
                     event.target.innerText = 'Please Sign In'
                 } else {
+                    const userID = currentUser.id;
+         
                     event.target.innerHTML = 'In your Watchlist';
                     event.target.className = 'added';
                     event.target.disabled = 'disabled'
@@ -259,7 +267,7 @@ function  watchList(userName) {
                         method: 'POST',
                         headers: {
                             'Content-type': 'application/json',
-                            Accept: 'application/json'
+                            'Accept': 'application/json'
                         },
                         body: JSON.stringify({
                             movie_id: `${movieID}`,
@@ -267,15 +275,22 @@ function  watchList(userName) {
                             watched: false
                         })
                     };
+    
                     fetch('http://localhost:3000/watchlists', configObj)
                     .then(resp => resp.json())
                     .then(watchlistData => {
-                        renderWatchList(watchlistData);
+                        console.log(watchlistData)
+                        currentUser.watchlists.push(watchlistData)
+                        currentUser.movies.push(watchlistData.movie)
+                        const newLI =`<li id=${watchlistData.id}>${watchlistData.movie.title} <button id="watched" class="user-buttons"> Mark as Watched </button>  <button id="remove" class="user-buttons"> Remove from Watchlist </button></li><br>`
+                        const watchlistUL = document.getElementById("user-details")
+                        watchlistUL.innerHTML += newLI
                     })
                     .catch(function(error) {
                         alert('Bad things! Ragnarők!');
                         console.log(error.message);
                     });
+
                 }
 
             }
@@ -284,27 +299,9 @@ function  watchList(userName) {
 }
 
 
-function renderWatchList(watchlistData) {
-  const movieID = watchlistData.movie_id;
-  const viewerID = watchlistData.viewer_id
-fetch(`http://localhost:3000/viewers/${viewerID}`)
-.then(resp => resp.json())
-.then(viewerData => {console.log("viewer-data",viewerData)
-})
-
-  fetch(`http://localhost:3000/movies/${movieID}`)
-    .then(resp => resp.json())
-    .then(movieData => {
-      console.log("movie-data", movieData);
-      const ul = document.getElementById("user-details")
-      const userCard = `<li id=${movieData.id}>${movieData.title} <button id="watched" class="user-buttons"> Mark as Watched </button>  <button id="remove" class="user-buttons"> Remove from Watchlist </button></li><br>`
-
-      ul.innerHTML += userCard;
-    });
-}
 
 function listenToUserDetails() {
-    const userDiv = document.getElementsByClassName('flex-container')
+    const userDiv = document.getElementsByClassName('flex-container')[0]
     userDiv.addEventListener('click', function(e) {
         if(e.target.id === 'watched') {
             markAsWatched(e)
@@ -322,24 +319,24 @@ function removeMovieFromWatchlist() {
 
 
 
-function markAsWatched() {
-   if(currentUser) {
-       debugger
-        const userDiv = document.getElementsByClassName('flex-container')
-        userDiv.addEventListener('click', function(e) {
-            if(e.target.id === 'watched') {
-                const movie = e.parentElement.id
+function markAsWatched(e) {
+    const watchListID = e.target.parentElement.id
+    const watchListInstance = {
+        id: watchListID
+    }
+   
+    const reqObj = {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/json'
+        },
+        body: JSON.stringify(watchListInstance)
+    }
 
-                reqObj = {
-                    method: 'PATCH',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(movie)
-                }
-
-            }
-        })
-   }
+    fetch(`http://localhost:3000/watchlists/${watchListID}`, reqObj)
+    .then(resp => resp.json())
+    // .then(watchlistInstance => console.log(watchlistInstance))
+    e.target.className = 'watched'
+    e.target.innerHTML = 'Watched'
 }
