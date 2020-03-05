@@ -102,7 +102,7 @@ body {
     font-size: 1.2em;
     font-family: 'Trebuchet MS';
     background-color: #eeeeee;
-    height: 230px;
+    /* height: 230px; */
     width: auto;
     box-shadow: 10px 10px black;
     padding: 10px;

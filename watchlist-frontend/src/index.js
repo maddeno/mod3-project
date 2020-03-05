@@ -14,7 +14,7 @@ genreFiltering();
 toggleDescription();
 toggleSignIn();
 signInFetch();
-
+removeMovieFromWatchlist()
 
 function fetchMovies() {
   fetch('http://localhost:3000/movies')
@@ -295,7 +295,7 @@ fetch(`http://localhost:3000/viewers/${viewerID}`)
     .then(movieData => {
       console.log("movie-data", movieData);
       const ul = document.getElementById("user-details")
-      const userCard = `<li id=${movieData.id}>${movieData.title} <button id="watched" class="user-buttons"> Mark as Watched </button>  <button id="remove" class="user-buttons"> Remove from Watchlist </button></li><br>`
+      const userCard = `<li id=${movieData.id}>${movieData.title} <button id="watched" class="user-buttons"> Mark as Watched </button>  <button id="remove" class="user-buttons">Remove from Watchlist</button></li><br>`
 
       ul.innerHTML += userCard;
     });
@@ -303,5 +303,19 @@ fetch(`http://localhost:3000/viewers/${viewerID}`)
 
 
 function removeMovieFromWatchlist() {
+  userContainer.addEventListener("click", function(event){
+    if(event.target.innerHTML == " Remove from Watchlist "){
+      console.log("she bad")
+      const watchListItem = event.target.parentElement
+      const configObj ={
+        method: "DELETE",
+        headers:{ "Content-type": "application/json", "Accept": "application/json"},
+      }
+      fetch(`http://localhost:3000/watchlists/${watchListItem.id}`, configObj)
+      .then(resp => resp.json())
+      .then(data => console.log(data))
+debugger
+    }
 
+  })
 }

@@ -18,5 +18,8 @@ class WatchlistsController < ApplicationController
             # watchlist, :include=>{:movie =>{:only =>[:title]},:viewer =>{:only=>[:username]}}
     end    
 
+    def destroy
+        watchlist = Watchlist.find_by()
+
 
 end
