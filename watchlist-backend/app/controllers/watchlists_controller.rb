@@ -10,16 +10,14 @@ class WatchlistsController < ApplicationController
     end
 
     def show
-        watchlist = Watchlist.where(viewer_id: params[:id])
-        
-        # options = {
-        #     include: [:movie,:viewer]}
-            render json: WatchlistSerializer.new(watchlist).to_serialized_json
-            # watchlist, :include=>{:movie =>{:only =>[:title]},:viewer =>{:only=>[:username]}}
+        watchlist = Watchlist.find_by(id: params[:id])   
+            render json: watchlist
     end    
 
     def destroy
-        watchlist = Watchlist.find_by()
-
+        watchlist = Watchlist.find_by(id: params[:id])
+        watchlist.destroy
+        render json: watchlist
+    end
 
 end

@@ -5,12 +5,14 @@ class ViewersController < ApplicationController
     end
 
     def show
-        viewer = Viewer.find_or_create_by(username: params[:username])
-        render json: viewer
+        viewer = Viewer.find_or_create_by(id: params[:id])
+        render json:viewer
     end
 
     def create
-        viewer = Viewer.find_or_create_by(username: params[:username])
+        viewer = Viewer.find_or_create_by(username: params[:username]) 
+
         render json: viewer
     end
+
 end

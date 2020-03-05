@@ -1,11 +1,11 @@
 let addMovie = false;
 let genreFilter = false;
 let signInFormToggle = false;
-let currentUser = null;
+let currentUser ="";
 const signInForm = document.querySelector('#sign-in-form');
 const NavButtons = document.querySelector('#buttons-container');
 const userContainer = document.getElementsByClassName('flex-container')[0];
-
+const main = document.querySelector('main')
 fetchMovies();
 toggleForm();
 toggleGenreFilter();
@@ -15,9 +15,7 @@ toggleDescription();
 toggleSignIn();
 signInFetch();
 
-removeMovieFromWatchlist()
 
-markAsWatched();
 
 
 
@@ -78,7 +76,7 @@ function formListener() {
 
 
 function toggleDescription() {
-  const main = document.querySelector('main');
+  
   main.addEventListener('click', function(e) {
     if (e.target.className === 'movie-image') {
       e.target.style.display = 'none';
@@ -162,7 +160,7 @@ function toggleSignIn() {
         userContainer.children[0].innerHTML = ''
         userContainer.style = 'display: none';
         event.target.innerHTML = 'Sign In';
-        currentUser = null
+        currentUser = ""
         reEnableButtons()
     }
   });
@@ -219,7 +217,7 @@ function renderUser(viewerData) {
     userName.dataset.name = viewerData.username;
     watchUl.append(userName);
     for(let i = 0; viewerData.watchlists.length > i ; i++){
-      const watchListLi = `<li id=${viewerData.watchlists[i].movie.id}>${viewerData.watchlists[i].movie.title} <button id="watched" class="user-buttons"> Mark as Watched </button>  <button id="remove" class="user-buttons"> Remove from Watchlist </button></li><br>`
+      const watchListLi = `<li id=${viewerData.watchlists[i].id}>${viewerData.watchlists[i].movie.title} <button id="watched" class="user-buttons"> Mark as Watched </button>  <button id=${viewerData.watchlists[i].movie.id} class="user-buttons"> Remove from Watchlist </button></li><br>`
       watchUl.innerHTML += watchListLi
       // debugger
     disableListedMovieButtons(viewerData.watchlists[i].movie.id)
@@ -289,6 +287,7 @@ function  watchList(userName) {
 
 
 function renderWatchList(watchlistData) {
+  console.log("watchlistData", watchlistData)
   const movieID = watchlistData.movie_id;
   const viewerID = watchlistData.viewer_id
 fetch(`http://localhost:3000/viewers/${viewerID}`)
@@ -301,43 +300,22 @@ fetch(`http://localhost:3000/viewers/${viewerID}`)
     .then(movieData => {
       console.log("movie-data", movieData);
       const ul = document.getElementById("user-details")
-      const userCard = `<li id=${movieData.id}>${movieData.title} <button id="watched" class="user-buttons"> Mark as Watched </button>  <button id="remove" class="user-buttons">Remove from Watchlist</button></li><br>`
+      const userCard = `<li id=${movieData.id}>${movieData.title} <button id="watched" class="user-buttons"> Mark as Watched </button>  <button id= ${movieData.id} class="user-buttons">Remove from Watchlist</button></li><br>`
 
       ul.innerHTML += userCard;
     });
 }
 
 function listenToUserDetails() {
-    const userDiv = document.getElementsByClassName('flex-container')
+    const userDiv = document.getElementsByClassName('flex-container')[0]
     userDiv.addEventListener('click', function(e) {
         if(e.target.id === 'watched') {
             markAsWatched(e)
-        } else if(e.target.id === 'remove') {
+        } else if(e.target.innerHTML === ' Remove from Watchlist ') {
             removeMovieFromWatchlist(e)
         }
     })
 }
-
-
-
-function removeMovieFromWatchlist() {
-  userContainer.addEventListener("click", function(event){
-    if(event.target.innerHTML == " Remove from Watchlist "){
-      console.log("she bad")
-      const watchListItem = event.target.parentElement
-      const configObj ={
-        method: "DELETE",
-        headers:{ "Content-type": "application/json", "Accept": "application/json"},
-      }
-      fetch(`http://localhost:3000/watchlists/${watchListItem.id}`, configObj)
-      .then(resp => resp.json())
-      .then(data => console.log(data))
-debugger
-    }
-
-  })
-}
-
 
 
 function markAsWatched() {
