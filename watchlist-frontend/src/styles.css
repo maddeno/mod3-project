@@ -68,6 +68,10 @@ body {
     margin-bottom: 25px;
   }
 
+  .highlight{
+    box-shadow: 0 0 0 99999px rgba(0, 0, 0, .8);
+  }
+
   #add-movie-form {
     font-size: 1.2em;
   }
