@@ -1,12 +1,11 @@
 let addMovie = false;
 let genreFilter = false;
 let signInFormToggle = false;
-let currentUser = null;
+let currentUser ="";
 const signInForm = document.querySelector('#sign-in-form');
 const NavButtons = document.querySelector('#buttons-container');
 const userContainer = document.getElementsByClassName('flex-container')[0];
 const main = document.querySelector('main')
-
 fetchMovies();
 toggleForm();
 toggleGenreFilter();
@@ -76,7 +75,7 @@ function formListener() {
 
 
 function toggleDescription() {
-  const main = document.querySelector('main');
+  
   main.addEventListener('click', function(e) {
     if (e.target.className === 'movie-image') {
       e.target.style.display = 'none';
@@ -221,10 +220,10 @@ function renderUser(viewerData) {
 
     for(let i = 0; viewerData.watchlists.length > i ; i++){
         if(viewerData.watchlists[i].watched === true) {
-            let watchListLi = `<li id=${viewerData.watchlists[i].id}>${viewerData.watchlists[i].movie.title} <button id="watched" class="watched"> Watched </button>  <button id="remove" class="user-buttons"> Remove from Watchlist </button></li><br>`
+            let watchListLi = `<li id=${viewerData.watchlists[i].id}>${viewerData.watchlists[i].movie.title} <button id="watched" class="watched"> Watched </button>  <button id=${viewerData.watchlists[i].movie_id} class="user-buttons"> Remove from Watchlist </button></li><br>`
             watchUl.innerHTML += watchListLi
         } else {
-            let watchListLi = `<li id=${viewerData.watchlists[i].id}>${viewerData.watchlists[i].movie.title} <button id="watched" class="user-buttons"> Mark as Watched </button>  <button id="remove" class="user-buttons"> Remove from Watchlist </button></li><br>`
+            let watchListLi = `<li id=${viewerData.watchlists[i].id}>${viewerData.watchlists[i].movie.title} <button id="watched" class="user-buttons"> Mark as Watched </button>  <button id=${viewerData.watchlists[i].movie_id} class="user-buttons"> Remove from Watchlist </button></li><br>`
             watchUl.innerHTML += watchListLi
         }
 
@@ -280,10 +279,10 @@ function  watchList() {
                     fetch('http://localhost:3000/watchlists', configObj)
                     .then(resp => resp.json())
                     .then(watchlistData => {
-                        console.log(watchlistData)
+                        console.log("watlistdata",watchlistData)
                         currentUser.watchlists.push(watchlistData)
                         currentUser.movies.push(watchlistData.movie)
-                        const newLI =`<li id=${watchlistData.id}>${watchlistData.movie.title} <button id="watched" class="user-buttons"> Mark as Watched </button>  <button id="remove" class="user-buttons"> Remove from Watchlist </button></li><br>`
+                        const newLI =`<li id=${watchlistData.id}>${watchlistData.movie.title} <button id="watched" class="user-buttons"> Mark as Watched </button><button id="${watchlistData.movie_id}" class="user-buttons"> Remove from Watchlist </button></li><br>`
                         const watchlistUL = document.getElementById("user-details")
                         watchlistUL.innerHTML += newLI
                     })
@@ -306,7 +305,7 @@ function listenToUserDetails() {
     userDiv.addEventListener('click', function(e) {
         if(e.target.id === 'watched') {
             markAsWatched(e)
-        } else if(e.target.id === 'remove') {
+        } else if(e.target.innerHTML === ' Remove from Watchlist ') {
             removeMovieFromWatchlist(e)
         }
     })
@@ -314,13 +313,41 @@ function listenToUserDetails() {
 
 
 
+function removeMovieFromWatchlist(event) {
+  
+  const watchListItem = event.target.parentElement//watchlist id
 
-  
-  
+  const configObj ={
+    method: "DELETE",
+    headers:{ "Content-type": "application/json", "Accept": "application/json"}
+  }
+// debugger
+  fetch(`http://localhost:3000/watchlists/${watchListItem.id }`, configObj)
+  // .then(resp => resp.json())
+  // .then(data =>{ 
+  //   console.log(data)
+    renderDeletedWatchlist(watchListItem)
+  // })   
+ watchListItem.style = "display: none"
+}
+ 
+function renderDeletedWatchlist(watchListItem){
+
+  for( let i = 0 ; main.children.length > i ; i++ ){
+    if (main.children[i].dataset.id ===watchListItem.children[1].id){
+      const button = main.children[i].children[9]
+      button.className = ''
+      button.innerHTML = 'Add to Watchlist'
+      button.disabled = false
+    }
+  }
+}
+
 
 
 
 function markAsWatched(e) {
+ 
     const watchListID = e.target.parentElement.id
     const watchListInstance = {
         id: watchListID
@@ -337,7 +364,7 @@ function markAsWatched(e) {
 
     fetch(`http://localhost:3000/watchlists/${watchListID}`, reqObj)
     .then(resp => resp.json())
-    // .then(watchlistInstance => console.log(watchlistInstance))
+    .then(watchlistInstance => console.log(watchlistInstance))
     e.target.className = 'watched'
-    e.target.innerHTML = 'Watched'
+    e.target.innerHTML = 'watched'
 }
