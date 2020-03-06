@@ -5,6 +5,7 @@ let currentUser = null;
 const signInForm = document.querySelector('#sign-in-form');
 const NavButtons = document.querySelector('#buttons-container');
 const userContainer = document.getElementsByClassName('flex-container')[0];
+const main = document.querySelector('main')
 
 fetchMovies();
 toggleForm();
@@ -313,9 +314,9 @@ function listenToUserDetails() {
 
 
 
-function removeMovieFromWatchlist() {
 
-}
+  
+  
 
 
 

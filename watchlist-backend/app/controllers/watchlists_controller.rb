@@ -24,10 +24,9 @@ class WatchlistsController < ApplicationController
         render json: watchlist
     end
 
-    # private
-
-    # def watchlist_params
-    #     params.require(:watchlist).permit(:movie_id, :viewer_id, :watched)
-    # end
+    def delete
+        watchlist = Watchlist.find_by(id: params[:id])
+        watchlist.destroy
+    end
 
 end
