@@ -14,15 +14,15 @@ class WatchlistsController < ApplicationController
             render json: watchlist
     end    
 
-    def update
-        watchlist = Watchlist.find_by(id: params[:id])
-        watchlist.update(:watched => true )
-        render json: watchlist
-    end
-
     def destroy
         watchlist = Watchlist.find_by(id: params[:id])
         watchlist.destroy
+        render json: watchlist
+    end
+
+    def update
+        watchlist = Watchlist.find_by(id: params[:id])
+        watchlist.update(:watched => true )
         render json: watchlist
     end
 end
