@@ -10,14 +10,17 @@ class WatchlistsController < ApplicationController
     end
 
     def show
-        watchlist = Watchlist.where(viewer_id: params[:id])
-        
-        # options = {
-        #     include: [:movie,:viewer]}
-            render json: WatchlistSerializer.new(watchlist).to_serialized_json
-            # watchlist, :include=>{:movie =>{:only =>[:title]},:viewer =>{:only=>[:username]}}
+        watchlist = Watchlist.find_by(id: params[:id])   
+            render json: watchlist
     end    
 
+<<<<<<< HEAD
+    def destroy
+        watchlist = Watchlist.find_by(id: params[:id])
+        watchlist.destroy
+        render json: watchlist
+    end
+=======
     def update
         watchlist = Watchlist.find_by(id: params[:id])
         watchlist.update(:watched => true )
@@ -29,5 +32,6 @@ class WatchlistsController < ApplicationController
     # def watchlist_params
     #     params.require(:watchlist).permit(:movie_id, :viewer_id, :watched)
     # end
+>>>>>>> 94474ea5344520494d525011eb449d277505bac8
 
 end
