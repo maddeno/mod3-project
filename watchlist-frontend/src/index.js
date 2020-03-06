@@ -15,6 +15,7 @@ toggleDescription();
 toggleSignIn();
 signInFetch();
 watchList();
+// hoverDescription();
 
 
 
@@ -71,6 +72,14 @@ function formListener() {
 
     movieForm.reset();
   });
+}
+
+function hoverDescription() {
+    main.addEventListener('mouseover', function (e) {
+        if(e.target.className === 'movie-image') {
+            e.target.className += 'highlight';
+        }
+    })
 }
 
 
@@ -205,6 +214,7 @@ function signInFetch() {
     signInForm.style.display = 'none';
     const signInBtn = document.querySelector('#signInBtn');
     signInBtn.innerHTML = 'Sign Out';
+    reEnableButtons()
   });
 }
 
