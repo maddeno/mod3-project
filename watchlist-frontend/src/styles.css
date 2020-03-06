@@ -1,4 +1,7 @@
+
+
 body {
+  background-color: rgba(185, 0, 0, 0.829);
     margin: 0;
     padding: 0;
   }
@@ -6,7 +9,7 @@ body {
       font-family: trebuchet MS;
   
       background-color: goldenrod;
-      font-size: 40px;
+      font-size: 50px;
       padding-bottom: 10px;
       border-color: red;
       border-radius: 100%;
@@ -33,6 +36,7 @@ body {
   }
 
   #buttons-container {
+    padding-top: 50px;
     text-align: center;
   }
 
@@ -84,6 +88,7 @@ body {
    padding: 1px;
    background-color: goldenrod;
    text-align: center;
+   border-radius: 100%;
   }
   .row{
     grid-template-columns: 1fr;
