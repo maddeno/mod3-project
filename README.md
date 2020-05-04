@@ -10,7 +10,7 @@
 
 Watchlist was built as the mod-3 project for Flatiron School's software enginerring boot camp. It is a single-page JavaScript app with a Rails back-end meant for movie-lovers to browse films and track their viewing. Users can browse the films already in the database, filter by genre, add new films to the database, and add films to their individual watchlist.
 
-The real challenge here was to show proficiency at conditional renering with vanilla JavaScript. Working with a single page required a three-dimensional understanding of user flow to accomodate a variety of possible conditions, and display the appropriate data. By the time this project was finished, I was excited to start learning React and to build more complex apps using components. 
+The real challenge here was to show proficiency at conditional rendering with vanilla JavaScript. Working with a single page required a three-dimensional understanding of user flow to accomodate a variety of possible conditions, and display the appropriate data. By the time this project was finished, I was excited to start learning React and to build more complex apps using components. 
 
 The Rails back-end consists of an ActiveRecord relational database storing users, movies, and a join table: watchlists. A watchlist belongs to a particular user, and many movies can be added to a watchlist. 
 
