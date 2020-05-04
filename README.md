@@ -14,7 +14,9 @@ The real challenge here was to show proficiency at conditional renering with van
 
 The Rails back-end consists of an ActiveRecord relational database storing users, movies, and a join table: watchlists. A watchlist belongs to a particular user, and many movies can be added to a watchlist. 
 
-When the page mounts, all of the movies in the database are rendered in a card which includes and image,the title, director, release date, and genre. Users can scroll through the cards to see the available movies, or use the navigation button at the top to filter them by genre. When a genre filter is selected, the page morphs to render only the movies where the genre attribut matches the filter. 
+When the page mounts, all of the movies in the database are rendered on a card which includes the title, director, release date, and genre as well as an image. Cards can be clicked; this toggles the display to show a description of the movie's plot.
+
+Users can scroll through the cards to see the available movies, or use the navigation button at the top to filter them by genre. When a genre filter is selected, the page morphs to render only the movies where the genre attribut matches the filter. 
 
 There is also a button at the top to add a movie to the database. Upon clicking the "Add Movie" button, a form renders with input fields for all the requisite movie attributes. Once submitted, a new movie card appears at the bottom of the page. 
 
