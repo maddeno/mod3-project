@@ -43,6 +43,4 @@ There is also a button at the top to add a movie to the database. Upon clicking 
 
 All cards include an "Add to Watchlist" button. If clicked when no user is logged-in, the text in the button changes, prompting the user to log in. Once a user is logged in they can add movies to their watchlist, which appears just below the navbar. Next to each movie in the watchlist there are buttons mark the movie as "watched" or to delete it from the watchlist. 
 
-To start, navigate to the back-end and run ```rails s```. In another terminal navigate to /src in the front-end and run ```open index.html```.
-
 
