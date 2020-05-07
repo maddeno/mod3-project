@@ -6,7 +6,28 @@
 
 ### Demo: https://drive.google.com/open?id=1XrUGi8iK5mYCCZZn5whQZC9wKfom2ntr
 
-### Technologies: Ruby, Rails, SQL, ActiveRecord JavaScript, Fetch 
+### Features:
+  - Create and Read functionality for Movies
+  - Full CRUD functionality for Watchlists
+  - Conditional Rendering
+  - CSS Styling
+
+### Technologies:
+  - Ruby 2.6.1
+  - Rails 6.0.2
+  - sqlite3
+  - ActiveRecord 
+  - JavaScript
+  - Fetch 
+
+### Installing:
+  - Clone this repo to your local machine ```git clone git@github.com:maddeno/mod3-project.git```
+  - navigate to the back-end and run bundle install to install required dependencies
+  - run rails db:create to create a database locally.
+  - run rails db:migrate to create tables into the database.
+  - run rails db:seed to create seed data.
+  - start the back-end server run ```rails s```
+  - navigate to the front end and start the server run ```open index.html```
 
 Watchlist was built as the mod-3 project for Flatiron School's software enginerring boot camp. It is a single-page JavaScript app with a Rails back-end meant for movie-lovers to browse films and track their viewing. Users can browse the films already in the database, filter by genre, add new films to the database, and add films to their individual watchlist.
 
